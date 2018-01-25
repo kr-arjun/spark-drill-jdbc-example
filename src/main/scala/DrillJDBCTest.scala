@@ -27,7 +27,7 @@ object SparkDrillJdbcTest {
     JdbcDialects.registerDialect(drillDialect)
 
     val driver = "org.apache.drill.jdbc.Driver"
-    val url = "jdbc:drill:drillbit=10.10.72.72:31010"
+    val url = "jdbc:drill:drillbit=mapr-lab-node1:31010"
     val username = "mapr"
     val password = "mapr"
 
