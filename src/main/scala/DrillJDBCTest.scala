@@ -26,7 +26,6 @@ object SparkDrillJdbcTest {
 
     JdbcDialects.registerDialect(drillDialect)
 
-    // connect to the database named "mysql" on the localhost
     val driver = "org.apache.drill.jdbc.Driver"
     val url = "jdbc:drill:drillbit=10.10.72.72:31010"
     val username = "mapr"
