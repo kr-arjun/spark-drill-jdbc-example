@@ -48,3 +48,66 @@ You should see output like (logs are truncated):
 18/01/25 16:59:09 INFO ShutdownHookManager: Deleting directory /tmp/spark-12c3ede7-d50a-45c6-802a-901b9040deb5
 [mapr@mapr-lab-node1 ~]$
 ```
+
+
+Below are the options required to connect Drill MAPR SASL in spark. 
+
+-- Yarn cluster mode 
+
+export SPARK_PRINT_LAUNCH_COMMAND=1 
+
+jdbc_dir=/home/mapr/jdbc_jars 
+
+jdbc_classpath=$(find "$jdbc_dir" -name '*.jar' -printf '%p:' | sed 's/:$//' | sed "s#$jdbc_dir/##g"); 
+file_param=$(find "$jdbc_dir" -name '*.jar' -printf '%p,' | sed 's/,$//' ) 
+
+
+echo $jdbc_classpath 
+echo $file_param 
+
+
+
+export SPARK_SUBMIT_OPTS="$SPARK_SUBMIT_OPTS -Dmapr.library.flatclass" 
+
+/opt/mapr/spark/spark-2.1.0/bin/spark-submit --master yarn --deploy-mode cluster --conf spark.driver.extraClassPath="$jdbc_classpath" --conf spark.executor.extraClassPath="$jdbc_classpath" --conf "spark.driver.extraJavaOptions=-Dmapr.library.flatclass" --conf "spark.executor.extraJavaOptions=-Dmapr.library.flatclass" --conf "spark.driver.userClassPathFirst=true" --conf "spark.executor.userClassPathFirst=true" --files $file_param --class SparkDrillJdbcTest /home/mapr/SparkDrillJDBCApp-1.0-SNAPSHOT.jar 10.10.72.78 
+
+-- Yarn client mode 
+
+
+export SPARK_PRINT_LAUNCH_COMMAND=1 
+
+jdbc_dir=/home/mapr/jdbc_jars 
+
+executor_classpath=$(find "$jdbc_dir" -name '*.jar' -printf '%p:' | sed 's/:$//' | sed "s#$jdbc_dir/##g"); 
+driver_classpath=$(find "$jdbc_dir" -name '*.jar' -printf '%p:' | sed 's/:$//' ) 
+file_param=$(find "$jdbc_dir" -name '*.jar' -printf '%p,' | sed 's/,$//' ) 
+
+
+echo $driver_classpath 
+echo $executor_classpath 
+echo $file_param 
+
+
+
+
+/opt/mapr/spark/spark-2.1.0/bin/spark-submit --master yarn --deploy-mode client --conf spark.driver.extraClassPath="$driver_classpath" --conf spark.executor.extraClassPath="$executor_classpath" --conf "spark.driver.extraJavaOptions=-Dmapr.library.flatclass" --conf "spark.executor.extraJavaOptions=-Dmapr.library.flatclass" --conf "spark.driver.userClassPathFirst=true" --conf "spark.executor.userClassPathFirst=true" --files $file_param --class SparkDrillJdbcTest /home/mapr/SparkDrillJDBCApp-1.0-SNAPSHOT.jar 10.10.72.172 
+
+
+-- Local mode 
+
+
+
+
+export SPARK_PRINT_LAUNCH_COMMAND=1 
+
+jdbc_dir=/home/mapr/jdbc_jars 
+
+jdbc_classpath=$(find "$jdbc_dir" -name '*.jar' -printf '%p:' | sed 's/:$//' ) 
+file_param=$(find "$jdbc_dir" -name '*.jar' -printf '%p,' | sed 's/,$//' ) 
+
+echo $jdbc_classpath 
+echo $file_param 
+
+
+
+/opt/mapr/spark/spark-2.1.0/bin/spark-submit --master local --conf spark.driver.extraClassPath="$jdbc_classpath" --conf "spark.driver.extraJavaOptions=-Dmapr.library.flatclass" --conf "spark.driver.userClassPathFirst=true" --files $file_param --class SparkDrillJdbcTest /home/mapr/SparkDrillJDBCApp-1.0-SNAPSHOT.jar 10.10.72.172
