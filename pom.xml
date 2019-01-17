@@ -10,7 +10,7 @@
 
     <properties>
         <scala.version>2.11.5</scala.version>
-        <spark.version>2.1.0-mapr-1703</spark.version>
+        <spark.version>2.2.1-mapr-1803</spark.version>
     </properties>
 
     <repositories>
