@@ -70,10 +70,11 @@ echo $file_param
 export SPARK_SUBMIT_OPTS="$SPARK_SUBMIT_OPTS -Dmapr.library.flatclass" 
 
 /opt/mapr/spark/spark-2.1.0/bin/spark-submit --master yarn --deploy-mode cluster --conf spark.driver.extraClassPath="$jdbc_classpath" --conf spark.executor.extraClassPath="$jdbc_classpath" --conf "spark.driver.extraJavaOptions=-Dmapr.library.flatclass" --conf "spark.executor.extraJavaOptions=-Dmapr.library.flatclass" --conf "spark.driver.userClassPathFirst=true" --conf "spark.executor.userClassPathFirst=true" --files $file_param --class SparkDrillJdbcTest /home/mapr/SparkDrillJDBCApp-1.0-SNAPSHOT.jar 10.10.72.78 
+
 ```
 Yarn client mode 
 
-
+```
 export SPARK_PRINT_LAUNCH_COMMAND=1 
 
 jdbc_dir=/home/mapr/jdbc_jars 
@@ -91,9 +92,11 @@ echo $file_param
 
 
 /opt/mapr/spark/spark-2.1.0/bin/spark-submit --master yarn --deploy-mode client --conf spark.driver.extraClassPath="$driver_classpath" --conf spark.executor.extraClassPath="$executor_classpath" --conf "spark.driver.extraJavaOptions=-Dmapr.library.flatclass" --conf "spark.executor.extraJavaOptions=-Dmapr.library.flatclass" --conf "spark.driver.userClassPathFirst=true" --conf "spark.executor.userClassPathFirst=true" --files $file_param --class SparkDrillJdbcTest /home/mapr/SparkDrillJDBCApp-1.0-SNAPSHOT.jar 10.10.72.172 
+```
 
 Local mode 
 
+```
 export SPARK_PRINT_LAUNCH_COMMAND=1 
 
 jdbc_dir=/home/mapr/jdbc_jars 
@@ -107,3 +110,4 @@ echo $file_param
 
 
 /opt/mapr/spark/spark-2.1.0/bin/spark-submit --master local --conf spark.driver.extraClassPath="$jdbc_classpath" --conf "spark.driver.extraJavaOptions=-Dmapr.library.flatclass" --conf "spark.driver.userClassPathFirst=true" --files $file_param --class SparkDrillJdbcTest /home/mapr/SparkDrillJDBCApp-1.0-SNAPSHOT.jar 10.10.72.172
+```
